@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/promocionesFragment"
+            android:title="@string/promocionesfragmenttitle" />
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/listpedFragment"
+            android:icon="@drawable/baseline_view_list_24"
+            android:title="@string/lispedfragmenttitle" />
+        <item
+            android:id="@+id/creapedFragment"
+            android:icon="@drawable/baseline_create_24"
+            android:title="@string/creapedfragmenttitle" />
+    </group>
+</menu>

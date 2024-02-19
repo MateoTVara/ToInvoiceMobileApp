@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">InvoicingMobileApp</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Bienvenido!</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_cerrar">Cerrar Sesión</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="promocionesfragmenttitle">Promociones</string>
+
+    <string name="valingresar">INGRESAR</string>
+    <string name="valregistro">REGISTRO</string>
+    <string name="valusuario">Usuario</string>
+    <string name="valpassword">CONTRASENIA</string>
+    <string name="txtusuariohint">Usuario</string>
+    <string name="txcontraseniahint">Contraseña</string>
+
+    <string name="lispedfragmenttitle">Lista de Pedidos</string>
+    <string name="creapedfragmenttitle">Crear Pedido</string>
+    <string name="tvdetallepedido">Detalle del Pedido</string>
+    <string name="ptdocumento">Documento</string>
+    <string name="ptrazonsocial">Razón Social</string>
+    <string name="ptrucdni">RUC / DNI</string>
+    <string name="ptdireccion">Dirección</string>
+    <string name="ptreparto">Fecha de reparto</string>
+    <string name="ptvendedor">Vendedor</string>
+    <string name="ptdescripcionproducto">Descripción del producto</string>
+    <string name="ptunidad">Unidad</string>
+    <string name="ptcantidad">Cantidad</string>
+    <string name="ptprecio">Precio</string>
+    <string name="textbtncancelar">Cancelar</string>
+    <string name="textbtnregistrar">GUARDAR</string>
+    <string name="textbtnagregardetalle">AGREGAR DETALLE</string>
+    <string name="tvdescripcion">Descripción</string>
+    <string name="tviunidad">Unidad</string>
+    <string name="tvcantidad">Cantidad</string>
+    <string name="tvimporter">Importe</string>
+    <string name="tvacciones">Acciones</string>
+    <string name="ptidped">N°</string>
+    <string name="textids">ID</string>
+    <string name="btnactualizarlistado">Actualizar Listado</string>
+    <string name="modifypedfragmenttitle">Modificar Fragmento</string>
+    <string name="tvpromodeshint">Descripcion</string>
+    <string name="tvfchainihint">Fecha Inicial</string>
+    <string name="tvfchafin">Fecha final</string>
+</resources>

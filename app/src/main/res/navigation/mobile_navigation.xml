@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/promocionesFragment">
+    <fragment
+        android:id="@+id/promocionesFragment"
+        android:name="pe.edu.idat.toinvoicemobileapp.view.fragments.PromocionesFragment"
+        android:label="@string/promocionesfragmenttitle"
+        tools:layout="@layout/fragment_promociones" />
+    <fragment
+        android:id="@+id/listpedFragment"
+        android:name="pe.edu.idat.toinvoicemobileapp.view.fragments.ListpedFragment"
+        android:label="@string/lispedfragmenttitle"
+        tools:layout="@layout/fragment_listped" >
+        <action
+            android:id="@+id/action_listpedFragment_to_creapedFragment"
+            app:destination="@id/creapedFragment" />
+        <action
+            android:id="@+id/action_listpedFragment_to_modifypedFragment"
+            app:destination="@id/modifypedFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/creapedFragment"
+        android:name="pe.edu.idat.toinvoicemobileapp.view.fragments.CreapedFragment"
+        android:label="@string/creapedfragmenttitle"
+        tools:layout="@layout/fragment_creaped">
+        <action
+            android:id="@+id/action_creapedFragment_to_listpedFragment"
+            app:destination="@id/listpedFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/modifypedFragment"
+        android:name="pe.edu.idat.toinvoicemobileapp.view.fragments.ModifypedFragment"
+        android:label="@string/modifypedfragmenttitle"
+        tools:layout="@layout/fragment_modifyped" />
+</navigation>
