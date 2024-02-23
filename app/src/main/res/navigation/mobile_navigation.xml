@@ -37,4 +37,8 @@
         android:name="pe.edu.idat.toinvoicemobileapp.view.fragments.ModifypedFragment"
         android:label="@string/modifypedfragmenttitle"
         tools:layout="@layout/fragment_modifyped" />
+    <fragment
+        android:id="@+id/listproducFragment"
+        android:name="pe.edu.idat.toinvoicemobileapp.view.fragments.ListproducFragment"
+        android:label="@string/listproducfragmenttitle" />
 </navigation>

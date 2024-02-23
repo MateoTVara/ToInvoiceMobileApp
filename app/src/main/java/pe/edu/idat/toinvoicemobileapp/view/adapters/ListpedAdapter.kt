@@ -14,8 +14,6 @@ class ListpedAdapter : RecyclerView.Adapter<ListpedAdapter.ViewHolder>() {
 
     private var listpedResponseList = mutableListOf<ListpedResponse>()
     private var listpedResponseListOriginal = mutableListOf<ListpedResponse>()
-    private var listpeddetailedResponse = ListpeddetailedResponse()
-    private lateinit var listpedViewModel: ListpedViewModel
     private var onDeleteButtonClickListener: OnDeleteButtonClickListener? = null
     private var onEditButtonClickListener: OnEditButtonClickListener? = null
 

@@ -24,6 +24,7 @@
 
     <string name="lispedfragmenttitle">Lista de Pedidos</string>
     <string name="creapedfragmenttitle">Crear Pedido</string>
+    <string name="listproducfragmenttitle">Lista de Productos</string>
     <string name="tvdetallepedido">Detalle del Pedido</string>
     <string name="ptdocumento">Documento</string>
     <string name="ptrazonsocial">Razón Social</string>

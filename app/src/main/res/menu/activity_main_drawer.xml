@@ -18,4 +18,9 @@
             android:icon="@drawable/baseline_create_24"
             android:title="@string/creapedfragmenttitle" />
     </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/listproducFragment"
+            android:title="@string/listproducfragmenttitle" />
+    </group>
 </menu>

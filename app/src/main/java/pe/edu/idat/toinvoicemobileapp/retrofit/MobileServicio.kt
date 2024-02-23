@@ -30,6 +30,9 @@ interface MobileServicio {
     @GET("producto/buscarPorDescripcionParcial/{partialDescripcion}")
     fun sugerenciasPorDescripcion(@Path("partialDescripcion") descripcion: String): Call<List<ListproResponse>>
 
+    @GET("producto/listar")
+    fun listarProductos() : Call<List<ListproResponse>>
+
     @GET("usuarios/buscarPorNombreParcial/{partialNombre}")
     fun sugerenciasPorNombre(@Path("partialNombre") nombre: String): Call<List<ListusuResponse>>
 
