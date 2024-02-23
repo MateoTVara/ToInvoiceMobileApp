@@ -24,8 +24,11 @@ interface MobileServicio {
     @GET("cliente/buscarPorRazonSocialParcial/{partialRazonSocial}")
     fun sugerenciasPorRazonSocial(@Path("partialRazonSocial") razonSocial: String): Call<List<ListcliResponse>>
 
-    @GET("clientes/listar")
+    @GET("cliente/listar")
     fun listadoClientes(): Call<List<ListcliResponse>>
+
+    @PUT("cliente/agregar")
+    fun registrarClientes(@Body regiscliRequest: RegiscliRequest): Call<String>
 
     @GET("producto/buscarPorDescripcionParcial/{partialDescripcion}")
     fun sugerenciasPorDescripcion(@Path("partialDescripcion") descripcion: String): Call<List<ListproResponse>>
