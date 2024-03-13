@@ -23,4 +23,9 @@
             android:id="@+id/listproducFragment"
             android:title="@string/listproducfragmenttitle" />
     </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/listcliFragment"
+            android:title="@string/listclifragmenttitle" />
+    </group>
 </menu>

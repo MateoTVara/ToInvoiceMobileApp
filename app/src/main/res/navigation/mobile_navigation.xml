@@ -41,4 +41,9 @@
         android:id="@+id/listproducFragment"
         android:name="pe.edu.idat.toinvoicemobileapp.view.fragments.ListproducFragment"
         android:label="@string/listproducfragmenttitle" />
+    <fragment
+        android:id="@+id/listcliFragment"
+        android:name="pe.edu.idat.toinvoicemobileapp.view.fragments.ListcliFragment"
+        android:label="@string/listclifragmenttitle"
+        tools:layout="@layout/fragment_listcli" />
 </navigation>

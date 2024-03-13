@@ -7,6 +7,6 @@ class ListcliResponse {
     var direccion: String? = null
 
     override fun toString(): String {
-        return razonsocial ?: "" // or any field you want to display
+        return razonsocial ?: ""
     }
 }
