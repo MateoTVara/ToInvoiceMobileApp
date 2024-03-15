@@ -281,7 +281,6 @@ class CreapedFragment : Fragment() {
         }
     }
 
-
     private fun cancelarPedido() {
         btncancelar.setOnClickListener {
             creapedViewModel.eliminarDetallesNoAsignados()

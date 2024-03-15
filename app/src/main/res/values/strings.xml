@@ -52,4 +52,8 @@
     <string name="tvpromodeshint">Descripcion</string>
     <string name="tvfchainihint">Fecha Inicial</string>
     <string name="tvfchafin">Fecha final</string>
+    <string name="hintrazonsocial">Razón Social</string>
+    <string name="hintrucdni">RUC / DNI</string>
+    <string name="hintdireccion">Dirección</string>
+    <string name="creaclifragmenttitle">Registrar Cliente</string>
 </resources>

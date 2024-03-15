@@ -27,5 +27,8 @@
         <item
             android:id="@+id/listcliFragment"
             android:title="@string/listclifragmenttitle" />
+        <item
+            android:id="@+id/creacliFragment"
+            android:title="@string/creaclifragmenttitle" />
     </group>
 </menu>
