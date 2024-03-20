@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         binding.btnIngresar.setOnClickListener(this)
-        binding.btnRegistro.setOnClickListener(this)
         loginViewModel.loginResponseMutableLiveData.observe(this, Observer { loginResponse ->
             validarLogin(loginResponse)
         })
