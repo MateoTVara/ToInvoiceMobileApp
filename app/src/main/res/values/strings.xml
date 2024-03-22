@@ -56,4 +56,6 @@
     <string name="hintrucdni">RUC / DNI</string>
     <string name="hintdireccion">Dirección</string>
     <string name="creaclifragmenttitle">Registrar Cliente</string>
+    <string name="iniciar_sesion">ACCEDER</string>
+    <string name="Registrarse">REGISTRARSE</string>
 </resources>
