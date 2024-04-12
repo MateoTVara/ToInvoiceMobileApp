@@ -19,11 +19,9 @@ import pe.edu.idat.toinvoicemobileapp.retrofit.response.ListcliResponse
 import pe.edu.idat.toinvoicemobileapp.retrofit.response.ListdetalleResponse
 import pe.edu.idat.toinvoicemobileapp.retrofit.response.ListpeddetailedResponse
 import pe.edu.idat.toinvoicemobileapp.retrofit.response.ListproResponse
-import pe.edu.idat.toinvoicemobileapp.retrofit.response.ListusuResponse
 import pe.edu.idat.toinvoicemobileapp.view.adapters.ClienteAutoCompleteAdapter
 import pe.edu.idat.toinvoicemobileapp.view.adapters.ListdetailsAdapter
 import pe.edu.idat.toinvoicemobileapp.view.adapters.ProductoAutoCompleteAdapter
-import pe.edu.idat.toinvoicemobileapp.view.adapters.UsuarioAutoCompleteAdapter
 import pe.edu.idat.toinvoicemobileapp.viewmodel.CreapedViewModel
 import pe.edu.idat.toinvoicemobileapp.viewmodel.ListdetalleViewModel
 import pe.edu.idat.toinvoicemobileapp.viewmodel.ListpedViewModel
@@ -38,9 +36,10 @@ class CreapedFragment : Fragment() {
     private lateinit var listdetailsAdapter: ListdetailsAdapter
 
     private lateinit var ptrazonsocial: AutoCompleteTextView
-    private lateinit var ptidcli: EditText
     private lateinit var ptrucdni: EditText
     private lateinit var ptdireccion: EditText
+    private lateinit var ptserie: EditText
+    private lateinit var ptnumero: EditText
     private lateinit var ptdescripcionproducto: AutoCompleteTextView
     private lateinit var ptidproduc: EditText
     private lateinit var ptunidadproducto: EditText
@@ -49,13 +48,11 @@ class CreapedFragment : Fragment() {
     private lateinit var btnagregardetalle: Button
     private lateinit var btnactualizarlistado: Button
     private lateinit var btnguardar: Button
-    private lateinit var ptdocumento: EditText
     private lateinit var ptfchareparto: EditText
-    private lateinit var ptidusu: EditText
-    private lateinit var ptvendedor: AutoCompleteTextView
     private lateinit var btncancelar: Button
     private lateinit var ptidped: EditText
     private lateinit var tvtotal: TextView
+    private lateinit var spinnerTipoDocumento: Spinner
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,9 +71,10 @@ class CreapedFragment : Fragment() {
         })
 
         ptrazonsocial = binding.ptrazonsocial
-        ptidcli = binding.ptidcli
         ptrucdni = binding.ptrucdni
         ptdireccion = binding.ptdireccion
+        ptserie = binding.ptserie
+        ptnumero = binding.ptnumero
         ptdescripcionproducto = binding.ptdescripcionproducto
         ptidproduc = binding.ptidproduc
         ptunidadproducto = binding.ptunidadproducto
@@ -85,10 +83,8 @@ class CreapedFragment : Fragment() {
         btnagregardetalle = binding.btnagregardetalle
         btnactualizarlistado = binding.btnactualizarlistado
         btnguardar = binding.btnguardar
-        ptdocumento = binding.ptdocumento
-        ptfchareparto = binding.ptfchareparto
-        ptidusu = binding.ptidusu
-        ptvendedor = binding.ptvendedor
+        spinnerTipoDocumento = binding.spinnerTipoDocumento
+        ptfchareparto = binding.ptfchaemision
         btncancelar = binding.btncancelar
         ptidped = binding.ptidped
         tvtotal = binding.tvtotal
@@ -111,7 +107,7 @@ class CreapedFragment : Fragment() {
         listdetalleViewModel.listarDetallesNoAsignados()
         setupViewsCliente()
         setupViewsProducto()
-        setupViewsUsuarios()
+        //setupViewsUsuarios()
         setupAgregarDetalleButton()
         onclickActualizarListado()
         borrarDetalle()
@@ -131,8 +127,7 @@ class CreapedFragment : Fragment() {
         ptrazonsocial.setOnItemClickListener { parent, view, position, id ->
             val clienteSeleccionado = parent.getItemAtPosition(position) as ListcliResponse?
             if (clienteSeleccionado != null) {
-                ptidcli.setText(clienteSeleccionado.idcli.toString())
-                ptrucdni.setText(clienteSeleccionado.rucdni)
+                ptrucdni.setText(clienteSeleccionado.numeroDocumento)
                 ptdireccion.setText(clienteSeleccionado.direccion)
             }
         }
@@ -160,9 +155,9 @@ class CreapedFragment : Fragment() {
         ptdescripcionproducto.setOnItemClickListener { parent, view, position, id ->
             val productoSeleccionado = parent.getItemAtPosition(position) as ListproResponse?
             if (productoSeleccionado != null) {
-                ptidproduc.setText(productoSeleccionado.idproduc.toString())
-                ptunidadproducto.setText(productoSeleccionado.uniproduc)
-                ptprecioproducto.setText(productoSeleccionado.precio.toString())
+                ptidproduc.setText(productoSeleccionado.codigo.toString())
+                ptunidadproducto.setText(productoSeleccionado.unidadDeMedida)
+                ptprecioproducto.setText(productoSeleccionado.precioUnitario.toString())
             }
         }
 
@@ -179,7 +174,13 @@ class CreapedFragment : Fragment() {
         }
     }
 
-    private fun setupViewsUsuarios() {
+    private fun mostrarSugerenciasDeProductos(sugerencias: List<ListproResponse>) {
+        val adapter = ProductoAutoCompleteAdapter(requireContext(), sugerencias)
+        ptdescripcionproducto.setAdapter(adapter)
+        adapter.notifyDataSetChanged()
+    }
+
+    /*private fun setupViewsUsuarios() {
         ptvendedor.setOnItemClickListener { parent, view, position, id ->
             val usuarioSeleccionado = parent.getItemAtPosition(position) as ListusuResponse?
             if (usuarioSeleccionado != null) {
@@ -198,19 +199,13 @@ class CreapedFragment : Fragment() {
         creapedViewModel.sugerenciasusuariosLiveData.observe(viewLifecycleOwner) { sugerencias ->
             mostrarSugerenciasDeVendedores(sugerencias)
         }
-    }
+    }*/
 
-    private fun mostrarSugerenciasDeProductos(sugerencias: List<ListproResponse>) {
-        val adapter = ProductoAutoCompleteAdapter(requireContext(), sugerencias)
-        ptdescripcionproducto.setAdapter(adapter)
-        adapter.notifyDataSetChanged()
-    }
-
-    private fun mostrarSugerenciasDeVendedores(sugerencias: List<ListusuResponse>) {
+    /*private fun mostrarSugerenciasDeVendedores(sugerencias: List<ListusuResponse>) {
         val adapter = UsuarioAutoCompleteAdapter(requireContext(), sugerencias)
         ptvendedor.setAdapter(adapter)
         adapter.notifyDataSetChanged()
-    }
+    }*/
 
     private fun setupAgregarDetalleButton() {
         btnagregardetalle?.setOnClickListener {
@@ -222,8 +217,8 @@ class CreapedFragment : Fragment() {
                     val cantidad = cantidadText.toInt()
 
                     val regisdetalleRequest = RegisdetalleRequest()
-                    regisdetalleRequest.idped = getArguments()?.getInt("idped") ?: 0 // Establecer idped
-                    regisdetalleRequest.idproduc = idproduc
+                    regisdetalleRequest.orderId = getArguments()?.getInt("orderId") ?: 0 // Establecer idped
+                    regisdetalleRequest.codigo = idproduc
                     regisdetalleRequest.cantidad = cantidad
 
                     creapedViewModel.registrarDetalleParcial(regisdetalleRequest)
@@ -256,20 +251,21 @@ class CreapedFragment : Fragment() {
 
     private fun setupGuardarPedidoButton() {
         btnguardar?.setOnClickListener {
-            val documento = ptdocumento.text.toString().trim().toUpperCase(Locale.getDefault())
-            val idcliText = ptidcli.text.toString().trim()
+            val tipoComprobante = spinnerTipoDocumento.selectedItem.toString().trim().toUpperCase(Locale.getDefault())
+            val rucdni = ptrucdni.text.toString().trim()
             val fchareparto = ptfchareparto.text.toString().trim()
-            val idusuText = ptidusu.text.toString().trim()
-            if (!documento.isEmpty() && !idcliText.isEmpty() && !fchareparto.isEmpty() && !idusuText.isEmpty()) {
+            val serieText = ptserie.text.toString().trim()
+            val numeroText = ptnumero.text.toString().trim()
+            if (!tipoComprobante.isEmpty() && !rucdni.isEmpty() && !fchareparto.isEmpty()) {
                 try {
-                    val idcli = idcliText.toInt()
-                    val idusu = idusuText.toInt()
+                    val numeroVal = numeroText.toInt()
 
                     val regispedRequest = RegispedRequest()
-                    regispedRequest.documento = documento
-                    regispedRequest.idcli = idcli
-                    regispedRequest.fchareparto = fchareparto
-                    regispedRequest.idusu = idusu
+                    regispedRequest.serie = serieText
+                    regispedRequest.numero = numeroVal
+                    regispedRequest.tipoDeComprobante = tipoComprobante
+                    regispedRequest.numeroDocumento = rucdni
+                    regispedRequest.fechaDeEmision = fchareparto
 
                     creapedViewModel.registrarPedido(regispedRequest)
                     limpiarPedidosCampos()
@@ -291,14 +287,11 @@ class CreapedFragment : Fragment() {
     }
 
     private fun limpiarPedidosCampos() {
-        ptdocumento.text.clear()
         ptrazonsocial.text.clear()
-        ptidcli.text.clear()
+        ptserie.text.clear()
         ptrucdni.text.clear()
         ptdireccion.text.clear()
         ptfchareparto.text.clear()
-        ptidusu.text.clear()
-        ptvendedor.text.clear()
         ptidped.text.clear()
     }
 
@@ -309,28 +302,36 @@ class CreapedFragment : Fragment() {
     }
 
     private fun actualizarVistaConDetalles(listpeddetailedResponse: ListpeddetailedResponse) {
-        ptidped.setText(listpeddetailedResponse.idped.toString())
-        ptidcli.setText(listpeddetailedResponse.idcli.toString())
-        ptidusu.setText(listpeddetailedResponse.idusu.toString())
-        ptdocumento.setText(listpeddetailedResponse.documento)
-        ptrazonsocial.setText(listpeddetailedResponse.razonsocial)
-        ptvendedor.setText(listpeddetailedResponse.nombre)
-        ptfchareparto.setText(listpeddetailedResponse.fchareparto)
-        ptrucdni.setText(listpeddetailedResponse.rucdni)
+        val tipoDocumento = listpeddetailedResponse.tipoDeComprobante
+
+        // Seleccionar la opción correspondiente en el Spinner
+        val spinnerPosition = when (tipoDocumento) {
+            "FACTURA" -> 1 // El índice 1 corresponde a FACTURA en el array
+            "BOLETA" -> 0 // El índice 0 corresponde a BOLETA en el array
+            else -> 0 // Valor predeterminado si el tipo de documento no coincide con ninguno de los esperados
+        }
+
+        ptidped.setText(listpeddetailedResponse.id.toString())
+        ptserie.setText(listpeddetailedResponse.serie)
+        ptnumero.setText(listpeddetailedResponse.numero.toString())
+        spinnerTipoDocumento.setSelection(spinnerPosition)
+        ptfchareparto.setText(listpeddetailedResponse.fechaDeEmision)
+        ptrucdni.setText(listpeddetailedResponse.numeroDocumento)
         ptdireccion.setText(listpeddetailedResponse.direccion)
     }
 
     private fun actualizarTotal(detalles: List<ListdetalleResponse>) {
         var total = 0.0
         for (detalle in detalles) {
-            total += detalle.importe
+            total += detalle.total
         }
         tvtotal.text = String.format(Locale.getDefault(), "Total: $%.2f", total)
     }
 
     private fun limpiarCampos() {
         ptrazonsocial.text.clear()
-        ptidcli.text.clear()
+        ptserie.text.clear()
+        ptnumero.text.clear()
         ptrucdni.text.clear()
         ptdireccion.text.clear()
         ptdescripcionproducto.text.clear()
@@ -338,10 +339,8 @@ class CreapedFragment : Fragment() {
         ptunidadproducto.text.clear()
         ptprecioproducto.text.clear()
         ptcantidadproducto.text.clear()
-        ptdocumento.text.clear()
+        spinnerTipoDocumento.setSelection(0)
         ptfchareparto.text.clear()
-        ptidusu.text.clear()
-        ptvendedor.text.clear()
         ptidped.text.clear()
     }
 

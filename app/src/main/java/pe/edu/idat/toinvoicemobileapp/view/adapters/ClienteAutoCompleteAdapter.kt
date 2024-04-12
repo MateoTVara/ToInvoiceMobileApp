@@ -14,7 +14,7 @@ class ClienteAutoCompleteAdapter(context: Context, listcliResponses: List<Listcl
         val textView = super.getView(position, convertView, parent) as TextView
         val item = getItem(position)
         item?.let {
-            textView.text = it.razonsocial
+            textView.text = it.denominacion
         }
         return textView
     }
@@ -23,7 +23,7 @@ class ClienteAutoCompleteAdapter(context: Context, listcliResponses: List<Listcl
         val textView = super.getDropDownView(position, convertView, parent) as TextView
         val item = getItem(position)
         item?.let {
-            textView.text = it.razonsocial
+            textView.text = it.denominacion
         }
         return textView
     }

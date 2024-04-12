@@ -31,7 +31,7 @@
     <string name="ptrazonsocial">Razón Social</string>
     <string name="ptrucdni">RUC / DNI</string>
     <string name="ptdireccion">Dirección</string>
-    <string name="ptreparto">Fecha de reparto</string>
+    <string name="ptfechaemision">Fecha de Emisión</string>
     <string name="ptvendedor">Vendedor</string>
     <string name="ptdescripcionproducto">Descripción del producto</string>
     <string name="ptunidad">Unidad</string>
@@ -58,4 +58,10 @@
     <string name="creaclifragmenttitle">Registrar Cliente</string>
     <string name="iniciar_sesion">ACCEDER</string>
     <string name="Registrarse">REGISTRARSE</string>
+    <string name="creaped_ptserie">Serie</string>
+    <string name="creaped_ptnumero">Número</string>
+    <string name="hintcreacliemail1">Email(Opcional)</string>
+    <string name="hintcreacliemail2">Email 2(Opcional)</string>
+    <string name="hintcreacliemail3">Email 3(Opcional)</string>
+
 </resources>

@@ -7,13 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import pe.edu.idat.toinvoicemobileapp.R
 import pe.edu.idat.toinvoicemobileapp.databinding.FragmentCreacliBinding
-import pe.edu.idat.toinvoicemobileapp.databinding.FragmentCreapedBinding
 import pe.edu.idat.toinvoicemobileapp.retrofit.request.RegiscliRequest
-import pe.edu.idat.toinvoicemobileapp.retrofit.request.RegispedRequest
 import pe.edu.idat.toinvoicemobileapp.viewmodel.CreacliViewModel
 
 class CreacliFragment : Fragment() {
@@ -22,7 +18,7 @@ class CreacliFragment : Fragment() {
     private lateinit var creacliViewModel: CreacliViewModel
 
     private lateinit var ptcreaclirazonsocial: EditText
-    private lateinit var  ptcreaclirucdni: EditText
+    private lateinit var ptcreaclirucdni: EditText
     private lateinit var ptcreaclidireccion: EditText
     private lateinit var btncreacliguardar: Button
     private lateinit var btncreaclicancelar: Button
@@ -75,8 +71,8 @@ class CreacliFragment : Fragment() {
                 val rucdniconverted=rucdni.toInt()
 
                 val regiscliRequest = RegiscliRequest()
-                regiscliRequest.razonsocial = razonsocial
-                regiscliRequest.rucdni = rucdniconverted
+                regiscliRequest.denominacion = razonsocial
+                regiscliRequest.numeroDocumento = rucdniconverted
                 regiscliRequest.direccion = direccion
 
                 creacliViewModel.registrarCliente(regiscliRequest)

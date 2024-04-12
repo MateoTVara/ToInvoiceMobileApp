@@ -14,7 +14,7 @@ class ProductoAutoCompleteAdapter(context: Context, listproResponses: List<Listp
         val textView = super.getView(position, convertView, parent) as TextView
         val item = getItem(position)
         item?.let {
-            textView.text = it.desproduc
+            textView.text = it.descripcion
         }
         return textView
     }
@@ -23,7 +23,7 @@ class ProductoAutoCompleteAdapter(context: Context, listproResponses: List<Listp
         val textView = super.getDropDownView(position, convertView, parent) as TextView
         val item = getItem(position)
         item?.let {
-            textView.text = it.desproduc
+            textView.text = it.descripcion
         }
         return textView
     }

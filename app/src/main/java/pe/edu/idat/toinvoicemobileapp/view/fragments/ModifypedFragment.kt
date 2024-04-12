@@ -12,7 +12,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -121,7 +120,7 @@ class ModifypedFragment : Fragment() {
             val clienteSeleccionado = parent.getItemAtPosition(position) as ListcliResponse
             if (clienteSeleccionado != null) {
                 ptidcli.setText(clienteSeleccionado.idcli.toString())
-                ptrucdni.setText(clienteSeleccionado.rucdni)
+                ptrucdni.setText(clienteSeleccionado.numeroDocumento)
                 ptdireccion.setText(clienteSeleccionado.direccion)
             }
         }
@@ -151,9 +150,9 @@ class ModifypedFragment : Fragment() {
         ptdescripcionproducto.setOnItemClickListener { parent, view, position, id ->
             val productoSeleccionado = parent.getItemAtPosition(position) as ListproResponse
             if (productoSeleccionado != null) {
-                ptidproduc.setText(productoSeleccionado.idproduc.toString())
-                ptunidadproducto.setText(productoSeleccionado.uniproduc)
-                ptprecioproducto.setText(productoSeleccionado.precio.toString())
+                ptidproduc.setText(productoSeleccionado.codigo.toString())
+                ptunidadproducto.setText(productoSeleccionado.unidadDeMedida)
+                ptprecioproducto.setText(productoSeleccionado.precioUnitario.toString())
             }
         }
 
@@ -208,14 +207,14 @@ class ModifypedFragment : Fragment() {
     }
 
     private fun actualizarVistaConDetalles(listpeddetailedResponse: ListpeddetailedResponse) {
-        ptidped.setText(listpeddetailedResponse.idped.toString())
+        ptidped.setText(listpeddetailedResponse.id.toString())
         ptidcli.setText(listpeddetailedResponse.idcli.toString())
         ptidusu.setText(listpeddetailedResponse.idusu.toString())
-        ptdocumento.setText(listpeddetailedResponse.documento)
-        ptrazonsocial.setText(listpeddetailedResponse.razonsocial)
+        ptdocumento.setText(listpeddetailedResponse.tipoDeComprobante)
+        ptrazonsocial.setText(listpeddetailedResponse.denominacion)
         ptvendedor.setText(listpeddetailedResponse.nombre)
-        ptfchareparto.setText(listpeddetailedResponse.fchareparto)
-        ptrucdni.setText(listpeddetailedResponse.rucdni)
+        ptfchareparto.setText(listpeddetailedResponse.fechaDeEmision)
+        ptrucdni.setText(listpeddetailedResponse.numeroDocumento)
         ptdireccion.setText(listpeddetailedResponse.direccion)
         tvtotal.setText(listpeddetailedResponse.total.toString())
     }
@@ -233,9 +232,9 @@ class ModifypedFragment : Fragment() {
                     val idped = idpedText.toInt()
 
                     val regisdetalleRequest = RegisdetalleRequest().apply {
-                        this.idproduc = idproduc
+                        this.codigo = idproduc
                         this.cantidad = cantidad
-                        this.idped = idped
+                        this.orderId = idped
                     }
 
                     creapedViewModel.registrarDetalleParcialConIdped(regisdetalleRequest)
@@ -299,10 +298,10 @@ class ModifypedFragment : Fragment() {
                     val idusu = idusuText.toInt()
 
                     val modifypedRequest = ModifypedRequest().apply {
-                        this.idped = idped
-                        this.documento = documento
-                        this.idcli = idcli
-                        this.fchareparto = fchareparto
+                        this.id = idped
+                        this.tipoDeComprobante = documento
+                        this.numeroDocumento = idcli
+                        this.fechaDeEmision = fchareparto
                         this.idusu = idusu
                     }
 

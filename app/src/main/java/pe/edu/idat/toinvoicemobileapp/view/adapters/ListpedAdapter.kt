@@ -5,10 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pe.edu.idat.toinvoicemobileapp.databinding.ItemListpedBinding
 import pe.edu.idat.toinvoicemobileapp.retrofit.response.ListpedResponse
-import pe.edu.idat.toinvoicemobileapp.retrofit.response.ListpeddetailedResponse
-import pe.edu.idat.toinvoicemobileapp.viewmodel.ListpedViewModel
-import java.util.*
-import java.util.stream.Collectors
 
 class ListpedAdapter : RecyclerView.Adapter<ListpedAdapter.ViewHolder>() {
 
@@ -42,17 +38,17 @@ class ListpedAdapter : RecyclerView.Adapter<ListpedAdapter.ViewHolder>() {
         val listpedResponse = listpedResponseList[position]
 
         with(holder.binding) {
-            tvid.text = listpedResponse.idped.toString()
-            tvrazonsocial.text = listpedResponse.razonsocial
-            tvdocumento.text = listpedResponse.documento
-            tvfchareparto.text = listpedResponse.fchareparto
+            tvid.text = listpedResponse.id.toString()
+            tvrazonsocial.text = listpedResponse.denominacion
+            tvdocumento.text = listpedResponse.tipoDeComprobante
+            tvfchareparto.text = listpedResponse.fechaDeEmision
 
             btndelete.setOnClickListener {
-                onDeleteButtonClickListener?.onDeleteButtonClick(listpedResponse.idped)
+                onDeleteButtonClickListener?.onDeleteButtonClick(listpedResponse.id)
             }
 
             btnedit.setOnClickListener {
-                onEditButtonClickListener?.onEditButtonClick(listpedResponse.idped)
+                onEditButtonClickListener?.onEditButtonClick(listpedResponse.id)
             }
         }
     }
@@ -75,7 +71,7 @@ class ListpedAdapter : RecyclerView.Adapter<ListpedAdapter.ViewHolder>() {
             listpedResponseList.addAll(listpedResponseListOriginal)
         } else {
             val busquedaPedido = listpedResponseList.filter { p ->
-                p.razonsocial?.toLowerCase()?.contains(
+                p.denominacion?.toLowerCase()?.contains(
                     filtro.toLowerCase()
                 ) ?: false
             }

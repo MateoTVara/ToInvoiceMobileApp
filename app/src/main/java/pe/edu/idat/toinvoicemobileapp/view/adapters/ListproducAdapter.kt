@@ -3,9 +3,7 @@ package pe.edu.idat.toinvoicemobileapp.view.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import pe.edu.idat.toinvoicemobileapp.databinding.ItemListpedBinding
 import pe.edu.idat.toinvoicemobileapp.databinding.ItemListproducBinding
-import pe.edu.idat.toinvoicemobileapp.retrofit.response.ListpedResponse
 import pe.edu.idat.toinvoicemobileapp.retrofit.response.ListproResponse
 
 class ListproducAdapter : RecyclerView.Adapter<ListproducAdapter.ViewHolder>() {
@@ -22,9 +20,9 @@ class ListproducAdapter : RecyclerView.Adapter<ListproducAdapter.ViewHolder>() {
         val listproResponse = listproResponseList[position]
 
         with(holder.binding) {
-            tvdesproduc.text = listproResponse.desproduc
-            tvprecio.text = listproResponse.precio.toString()
-            tvuniproduc.text = listproResponse.uniproduc
+            tvdesproduc.text = listproResponse.descripcion
+            tvprecio.text = listproResponse.precioUnitario.toString()
+            tvuniproduc.text = listproResponse.unidadDeMedida
         }
     }
 
@@ -46,7 +44,7 @@ class ListproducAdapter : RecyclerView.Adapter<ListproducAdapter.ViewHolder>() {
             listproResponseList.addAll(listproResponseListOriginal)
         } else {
             val busquedaProducto = listproResponseList.filter { p ->
-                p.desproduc?.toLowerCase()?.contains(
+                p.descripcion?.toLowerCase()?.contains(
                     filtro.toLowerCase()
                 ) ?: false
             }

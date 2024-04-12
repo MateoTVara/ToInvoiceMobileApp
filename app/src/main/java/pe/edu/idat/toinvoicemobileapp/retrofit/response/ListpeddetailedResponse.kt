@@ -1,14 +1,13 @@
 package pe.edu.idat.toinvoicemobileapp.retrofit.response
 
 class ListpeddetailedResponse {
+    var serie: String? = null
+    var numero: Int = 0
     var direccion: String? = null
-    var documento: String? = null
-    var fchareparto: String? = null
-    var idcli: Int = 0
-    var idusu: Int = 0
-    var idped: Int = 0
-    var nombre: String? = null
-    var razonsocial: String? = null
-    var rucdni: String? = null
+    var tipoDeComprobante: String? = null
+    var fechaDeEmision: String? = null
+    var id: Int = 0
+    var denominacion: String? = null
+    var numeroDocumento: String? = null
     var total: Double? = null
 }

@@ -1,5 +1,5 @@
 package pe.edu.idat.toinvoicemobileapp.retrofit.response
 
 class RegispedResponse {
-    var idped: Int = 0
+    var id: Int = 0
 }

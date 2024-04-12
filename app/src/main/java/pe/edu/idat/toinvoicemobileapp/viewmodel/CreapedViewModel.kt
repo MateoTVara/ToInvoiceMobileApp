@@ -85,7 +85,7 @@ class CreapedViewModel(application: Application) : AndroidViewModel(application)
                 override fun onResponse(call: Call<RegispedResponse>, response: Response<RegispedResponse>) {
                     if (response.isSuccessful) {
                         val regispedResponse: RegispedResponse? = response.body()
-                        val idped: Int = regispedResponse?.idped ?: -1
+                        val idped: Int = regispedResponse?.id ?: -1
 
                         // Asignar idped a detalles no asignados
                         asignarIdpedADetalles(idped)

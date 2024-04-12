@@ -1,7 +1,6 @@
 package pe.edu.idat.toinvoicemobileapp.view.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pe.edu.idat.toinvoicemobileapp.databinding.ItemDetallepedBinding
@@ -28,13 +27,13 @@ class ListdetailsAdapter : RecyclerView.Adapter<ListdetailsAdapter.ViewHolder>()
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val listdetalleResponse = listdetalleResponseList[position]
         with(holder.binding) {
-            tviddetalle.text = listdetalleResponse.iddetalle.toString()
-            tvdescripcion.text = listdetalleResponse.desproduc
-            tvunidad.text = listdetalleResponse.uniproduc
+            tviddetalle.text = listdetalleResponse.id.toString()
+            tvdescripcion.text = listdetalleResponse.descripcion
+            tvunidad.text = listdetalleResponse.unidadDeMedida
             tvcantidad.text = listdetalleResponse.cantidad.toString()
-            tvimporte.text = listdetalleResponse.importe.toString()
+            tvimporte.text = listdetalleResponse.total.toString()
             btnborrardetalle.setOnClickListener {
-                onDeleteButtonClickListener?.onDeleteButtonClick(listdetalleResponse.iddetalle)
+                onDeleteButtonClickListener?.onDeleteButtonClick(listdetalleResponse.id)
             }
         }
     }
@@ -60,7 +59,7 @@ class ListdetailsAdapter : RecyclerView.Adapter<ListdetailsAdapter.ViewHolder>()
     fun calcularSumaImportes(): Double {
         var suma = 0.0
         for (detalle in listdetalleResponseList) {
-            suma += detalle.importe
+            suma += detalle.total
         }
         return suma
     }

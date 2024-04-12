@@ -23,14 +23,12 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="40dp" />
 
-        <EditText
-            android:id="@+id/ptdocumento"
+        <Spinner
+            android:id="@+id/spinnerTipoDocumento"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="@string/ptdocumento"
-            android:inputType="text"
+            android:entries="@array/tipo_documento_options_orders"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toEndOf="@+id/ptidped"
@@ -46,36 +44,36 @@
             android:inputType="text"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toEndOf="@+id/ptidcli"
-            app:layout_constraintTop_toBottomOf="@+id/ptdocumento" />
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerTipoDocumento" />
 
         <EditText
-            android:id="@+id/ptidcli"
-            android:layout_width="50dp"
+            android:id="@+id/ptserie"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:editable="false"
             android:ems="10"
-            android:focusable="true"
-            android:hint="@string/ptidped"
-            android:inputType="text"
-            android:textAlignment="center"
-            android:textSize="14sp"
+            android:hint="@string/creaped_ptserie"
+            android:inputType="none"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toStartOf="@+id/ptnumero"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/ptidped" />
+            app:layout_constraintTop_toBottomOf="@+id/ptrazonsocial" />
 
         <EditText
-            android:id="@+id/ptidusu"
-            android:layout_width="50dp"
+            android:id="@+id/ptnumero"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:editable="false"
             android:ems="10"
-            android:focusable="true"
-            android:hint="@string/ptidped"
-            android:inputType="text"
-            android:textAlignment="center"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/ptfchareparto" />
+            android:hint="@string/creaped_ptnumero"
+            android:inputType="none"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toEndOf="@+id/ptserie"
+            app:layout_constraintTop_toBottomOf="@+id/ptrazonsocial" />
 
         <EditText
             android:id="@+id/ptidproduc"
@@ -103,7 +101,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/ptrazonsocial" />
+            app:layout_constraintTop_toBottomOf="@+id/ptserie" />
 
         <EditText
             android:id="@+id/ptdireccion"
@@ -120,30 +118,17 @@
             app:layout_constraintTop_toBottomOf="@+id/ptrucdni" />
 
         <EditText
-            android:id="@+id/ptfchareparto"
+            android:id="@+id/ptfchaemision"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:ems="10"
-            android:hint="@string/ptreparto"
+            android:hint="@string/ptfechaemision"
             android:inputType="text"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/ptdireccion" />
-
-        <AutoCompleteTextView
-            android:id="@+id/ptvendedor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="@string/ptvendedor"
-            android:inputType="text"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toEndOf="@+id/ptidusu"
-            app:layout_constraintTop_toBottomOf="@+id/ptfchareparto" />
 
         <AutoCompleteTextView
             android:id="@+id/ptdescripcionproducto"
@@ -212,7 +197,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/ptvendedor" />
+            app:layout_constraintTop_toBottomOf="@+id/ptfchaemision" />
 
         <Button
             android:id="@+id/btnagregardetalle"

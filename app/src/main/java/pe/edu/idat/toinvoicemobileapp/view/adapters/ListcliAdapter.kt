@@ -24,8 +24,8 @@ class ListcliAdapter: RecyclerView.Adapter<ListcliAdapter.ViewHolder>()  {
         val listcliResponse = listcliResponseList[position]
 
         with(holder.binding) {
-            tvclirazonsocial.text=listcliResponse.razonsocial.toString()
-            tvclirucdni.text=listcliResponse.rucdni.toString()
+            tvclirazonsocial.text=listcliResponse.denominacion.toString()
+            tvclirucdni.text=listcliResponse.numeroDocumento.toString()
             tvclidireccion.text=listcliResponse.direccion.toString()
 
         }
@@ -45,7 +45,7 @@ class ListcliAdapter: RecyclerView.Adapter<ListcliAdapter.ViewHolder>()  {
             listcliResponseList.addAll(listcliResponseListOriginal)
         } else {
             val busquedaCliente= listcliResponseList.filter { c ->
-                c.razonsocial?.toLowerCase()?.contains(
+                c.denominacion?.toLowerCase()?.contains(
                     filtro.toLowerCase()
                 ) ?: false
             }
