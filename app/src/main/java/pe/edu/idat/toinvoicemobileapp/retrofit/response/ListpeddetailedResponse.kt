@@ -8,6 +8,7 @@ class ListpeddetailedResponse {
     var fechaDeEmision: String? = null
     var id: Int = 0
     var denominacion: String? = null
+    var tipoDocumento: Int = 0
     var numeroDocumento: String? = null
     var total: Double? = null
 }

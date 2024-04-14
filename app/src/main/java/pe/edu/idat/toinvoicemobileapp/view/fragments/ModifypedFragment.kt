@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import pe.edu.idat.toinvoicemobileapp.R
 import pe.edu.idat.toinvoicemobileapp.databinding.FragmentModifypedBinding
 import pe.edu.idat.toinvoicemobileapp.retrofit.request.*
 import pe.edu.idat.toinvoicemobileapp.retrofit.response.*
@@ -30,7 +32,6 @@ class ModifypedFragment : Fragment() {
     private lateinit var creapedViewModel: CreapedViewModel
     private lateinit var listpedViewModel: ListpedViewModel
     private lateinit var ptrazonsocial: AutoCompleteTextView
-    private lateinit var ptidcli: EditText
     private lateinit var ptrucdni: EditText
     private lateinit var ptdireccion: EditText
     private lateinit var ptdescripcionproducto: AutoCompleteTextView
@@ -41,13 +42,16 @@ class ModifypedFragment : Fragment() {
     private lateinit var btnagregardetalle: Button
     private lateinit var btnactualizarlistado: Button
     private lateinit var btnguardar: Button
-    private lateinit var ptdocumento: EditText
-    private lateinit var ptfchareparto: EditText
+    private lateinit var spinnerTipoDocumento: Spinner
+    private lateinit var spinnerDocumentoCliente: Spinner
+    private lateinit var ptfechaemision: EditText
     private lateinit var ptidusu: EditText
     private lateinit var ptvendedor: AutoCompleteTextView
     private lateinit var btncancelar: Button
     private lateinit var ptidped: EditText
     private lateinit var tvtotal: TextView
+    private lateinit var ptserie: EditText
+    private lateinit var ptnumero: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +71,6 @@ class ModifypedFragment : Fragment() {
         )
 
         ptrazonsocial = binding.ptrazonsocial
-        ptidcli = binding.ptidcli
         ptrucdni = binding.ptrucdni
         ptdireccion = binding.ptdireccion
         ptdescripcionproducto = binding.ptdescripcionproducto
@@ -78,13 +81,14 @@ class ModifypedFragment : Fragment() {
         btnagregardetalle = binding.btnagregardetalle
         btnactualizarlistado = binding.btnactualizarlistado
         btnguardar = binding.btnguardar
-        ptdocumento = binding.ptdocumento
-        ptfchareparto = binding.ptfchareparto
-        ptidusu = binding.ptidusu
-        ptvendedor = binding.ptvendedor
+        spinnerTipoDocumento = binding.spinnerTipoDocumento
+        spinnerDocumentoCliente = binding.spinnerDocumentoCliente
+        ptfechaemision = binding.ptfchaemision
         btncancelar = binding.btncancelar
         ptidped = binding.ptidped
         tvtotal = binding.tvtotal
+        ptserie = binding.ptserie
+        ptnumero = binding.ptnumero
 
         creapedViewModel = ViewModelProvider(this).get(CreapedViewModel::class.java)
         arguments?.let {
@@ -103,9 +107,12 @@ class ModifypedFragment : Fragment() {
             })
         creapedViewModel.detallesPorPedidoLiveData.observe(viewLifecycleOwner,
             Observer { listdetalleResponses -> listdetailsAdapter.setDetalles(listdetalleResponses) })
+
+        spinnerDocumentoCliente.isEnabled=false
+
         setupViewsCliente()
         setupViewsProducto()
-        setupViewsUsuarios()
+        //setupViewsUsuarios()
         setupAgregarDetalleButton()
         borrarDetalle()
         setupModificarPedidoButton()
@@ -119,9 +126,17 @@ class ModifypedFragment : Fragment() {
         ptrazonsocial.setOnItemClickListener { parent, view, position, id ->
             val clienteSeleccionado = parent.getItemAtPosition(position) as ListcliResponse
             if (clienteSeleccionado != null) {
-                ptidcli.setText(clienteSeleccionado.idcli.toString())
+                val clienteDocumento = clienteSeleccionado.tipoDocumento
+                val spinnerClientePosition = when(clienteDocumento){
+                    1 -> 1
+                    6 -> 0
+                    else -> 1
+                }
+
+                spinnerDocumentoCliente.setSelection(spinnerClientePosition)
                 ptrucdni.setText(clienteSeleccionado.numeroDocumento)
                 ptdireccion.setText(clienteSeleccionado.direccion)
+                
             }
         }
 
@@ -171,7 +186,13 @@ class ModifypedFragment : Fragment() {
         })
     }
 
-    private fun setupViewsUsuarios() {
+    private fun mostrarSugerenciasDeProductos(sugerencias: List<ListproResponse>) {
+        val adapter = ProductoAutoCompleteAdapter(requireContext(), sugerencias)
+        ptdescripcionproducto.setAdapter(adapter)
+        adapter.notifyDataSetChanged()
+    }
+
+    /*private fun setupViewsUsuarios() {
         ptvendedor.setOnItemClickListener { parent, view, position, id ->
             val usuarioSeleccionado = parent.getItemAtPosition(position) as ListusuResponse
             if (usuarioSeleccionado != null) {
@@ -192,28 +213,37 @@ class ModifypedFragment : Fragment() {
         creapedViewModel.sugerenciasusuariosLiveData.observe(viewLifecycleOwner, Observer { sugerencias ->
             mostrarSugerenciasDeVendedores(sugerencias)
         })
-    }
+    }*/
 
-    private fun mostrarSugerenciasDeProductos(sugerencias: List<ListproResponse>) {
-        val adapter = ProductoAutoCompleteAdapter(requireContext(), sugerencias)
-        ptdescripcionproducto.setAdapter(adapter)
-        adapter.notifyDataSetChanged()
-    }
-
-    private fun mostrarSugerenciasDeVendedores(sugerencias: List<ListusuResponse>) {
+    /*private fun mostrarSugerenciasDeVendedores(sugerencias: List<ListusuResponse>) {
         val adapter = UsuarioAutoCompleteAdapter(requireContext(), sugerencias)
         ptvendedor.setAdapter(adapter)
         adapter.notifyDataSetChanged()
-    }
+    }*/
 
     private fun actualizarVistaConDetalles(listpeddetailedResponse: ListpeddetailedResponse) {
+
+        val pedidoDocumento = listpeddetailedResponse.tipoDeComprobante
+        val spinnerPosition = when (pedidoDocumento) {
+            "FACTURA" -> 1 // El índice 1 corresponde a FACTURA en el array
+            "BOLETA" -> 0 // El índice 0 corresponde a BOLETA en el array
+            else -> 0 // Valor predeterminado si el tipo de documento no coincide con ninguno de los esperados
+        }
+
+        val clienteDocumento = listpeddetailedResponse.tipoDocumento
+        val spinnerClientePosition = when(clienteDocumento){
+            1 -> 1
+            6 -> 0
+            else -> 1
+        }
+
         ptidped.setText(listpeddetailedResponse.id.toString())
-        ptidcli.setText(listpeddetailedResponse.idcli.toString())
-        ptidusu.setText(listpeddetailedResponse.idusu.toString())
-        ptdocumento.setText(listpeddetailedResponse.tipoDeComprobante)
+        ptserie.setText(listpeddetailedResponse.serie)
+        ptnumero.setText(listpeddetailedResponse.numero.toString())
+        spinnerDocumentoCliente.setSelection(spinnerClientePosition)
+        spinnerTipoDocumento.setSelection(spinnerPosition)
         ptrazonsocial.setText(listpeddetailedResponse.denominacion)
-        ptvendedor.setText(listpeddetailedResponse.nombre)
-        ptfchareparto.setText(listpeddetailedResponse.fechaDeEmision)
+        ptfechaemision.setText(listpeddetailedResponse.fechaDeEmision)
         ptrucdni.setText(listpeddetailedResponse.numeroDocumento)
         ptdireccion.setText(listpeddetailedResponse.direccion)
         tvtotal.setText(listpeddetailedResponse.total.toString())
@@ -259,12 +289,12 @@ class ModifypedFragment : Fragment() {
     }
 
     private fun limpiarPedidosCampos() {
-        ptdocumento.text.clear()
         ptrazonsocial.text.clear()
-        ptidcli.text.clear()
+        ptnumero.text.clear()
+        ptserie.text.clear()
         ptrucdni.text.clear()
         ptdireccion.text.clear()
-        ptfchareparto.text.clear()
+        ptfechaemision.text.clear()
         ptidusu.text.clear()
         ptvendedor.text.clear()
         ptidped.text.clear()
@@ -285,27 +315,35 @@ class ModifypedFragment : Fragment() {
 
     private fun setupModificarPedidoButton() {
         btnguardar.setOnClickListener {
+            val serieText = ptserie.text.toString().trim()
+            val numeroText = ptnumero.text.toString().trim()
             val idpedText = ptidped.text.toString().trim()
-            val documento = ptdocumento.text.toString().trim().toUpperCase(Locale.getDefault())
-            val idcliText = ptidcli.text.toString().trim()
-            val fchareparto = ptfchareparto.text.toString().trim()
-            val idusuText = ptidusu.text.toString().trim()
+            val rucdniText = ptrucdni.text.toString().trim()
+            val fchaEmision = ptfechaemision.text.toString().trim()
+            val tipoComprobante = spinnerTipoDocumento.selectedItem.toString().trim().toUpperCase(Locale.getDefault())
+            val spinner = view?.findViewById<Spinner>(R.id.spinnerDocumentoCliente)
+            val selectedItem = spinner?.selectedItem.toString()
 
-            if (!documento.isEmpty() && !idcliText.isEmpty() && !fchareparto.isEmpty() && !idusuText.isEmpty()) {
+            if (!rucdniText.isEmpty()) {
                 try {
-                    val idped = idpedText.toInt()
-                    val idcli = idcliText.toInt()
-                    val idusu = idusuText.toInt()
-
-                    val modifypedRequest = ModifypedRequest().apply {
-                        this.id = idped
-                        this.tipoDeComprobante = documento
-                        this.numeroDocumento = idcli
-                        this.fechaDeEmision = fchareparto
-                        this.idusu = idusu
+                    val tipoDocumentoValue = when (selectedItem) {
+                        "RUC" -> 6
+                        "DNI" -> 1
+                        else -> -1 // Default value or handle error case
                     }
+                    val numeroOrder = numeroText.toInt()
+                    val idped = idpedText.toInt()
 
-                    creapedViewModel.modificarPedido(idped, modifypedRequest)
+                    val modifypedRequest = ModifypedRequest()
+                    modifypedRequest.serie = serieText
+                    modifypedRequest.numero = numeroOrder
+                    modifypedRequest.fechaDeEmision = fchaEmision
+                    modifypedRequest.tipoDocumento = tipoDocumentoValue
+                    modifypedRequest.id =idped
+                    modifypedRequest.numeroDocumento=rucdniText
+                    modifypedRequest.tipoDeComprobante=tipoComprobante
+
+                    creapedViewModel.modificarPedido(modifypedRequest)
                     regresarALaVistaAnterior()
                 } catch (e: NumberFormatException) {
                     Log.e("ModifypedFragment", "Error al convertir cadena a número", e)

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import pe.edu.idat.toinvoicemobileapp.R
 import pe.edu.idat.toinvoicemobileapp.databinding.FragmentCreapedBinding
 import pe.edu.idat.toinvoicemobileapp.retrofit.request.RegisdetalleRequest
 import pe.edu.idat.toinvoicemobileapp.retrofit.request.RegispedRequest
@@ -25,6 +26,7 @@ import pe.edu.idat.toinvoicemobileapp.view.adapters.ProductoAutoCompleteAdapter
 import pe.edu.idat.toinvoicemobileapp.viewmodel.CreapedViewModel
 import pe.edu.idat.toinvoicemobileapp.viewmodel.ListdetalleViewModel
 import pe.edu.idat.toinvoicemobileapp.viewmodel.ListpedViewModel
+import java.text.SimpleDateFormat
 import java.util.*
 
 class CreapedFragment : Fragment() {
@@ -38,8 +40,6 @@ class CreapedFragment : Fragment() {
     private lateinit var ptrazonsocial: AutoCompleteTextView
     private lateinit var ptrucdni: EditText
     private lateinit var ptdireccion: EditText
-    private lateinit var ptserie: EditText
-    private lateinit var ptnumero: EditText
     private lateinit var ptdescripcionproducto: AutoCompleteTextView
     private lateinit var ptidproduc: EditText
     private lateinit var ptunidadproducto: EditText
@@ -48,11 +48,12 @@ class CreapedFragment : Fragment() {
     private lateinit var btnagregardetalle: Button
     private lateinit var btnactualizarlistado: Button
     private lateinit var btnguardar: Button
-    private lateinit var ptfchareparto: EditText
+    private lateinit var ptfechaemision: EditText
     private lateinit var btncancelar: Button
     private lateinit var ptidped: EditText
     private lateinit var tvtotal: TextView
     private lateinit var spinnerTipoDocumento: Spinner
+    private lateinit var spinnerDocumentoCliente: Spinner
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,8 +74,6 @@ class CreapedFragment : Fragment() {
         ptrazonsocial = binding.ptrazonsocial
         ptrucdni = binding.ptrucdni
         ptdireccion = binding.ptdireccion
-        ptserie = binding.ptserie
-        ptnumero = binding.ptnumero
         ptdescripcionproducto = binding.ptdescripcionproducto
         ptidproduc = binding.ptidproduc
         ptunidadproducto = binding.ptunidadproducto
@@ -84,7 +83,8 @@ class CreapedFragment : Fragment() {
         btnactualizarlistado = binding.btnactualizarlistado
         btnguardar = binding.btnguardar
         spinnerTipoDocumento = binding.spinnerTipoDocumento
-        ptfchareparto = binding.ptfchaemision
+        spinnerDocumentoCliente = binding.spinnerDocumentoCliente
+        ptfechaemision = binding.ptfchaemision
         btncancelar = binding.btncancelar
         ptidped = binding.ptidped
         tvtotal = binding.tvtotal
@@ -104,6 +104,8 @@ class CreapedFragment : Fragment() {
             }
         })
 
+        spinnerDocumentoCliente.isEnabled=false
+
         listdetalleViewModel.listarDetallesNoAsignados()
         setupViewsCliente()
         setupViewsProducto()
@@ -114,6 +116,7 @@ class CreapedFragment : Fragment() {
         setupGuardarPedidoButton()
         cancelarPedido()
         limpiarCampos()
+        establishFechaEmisionDate()
 
         return binding.root
     }
@@ -121,12 +124,27 @@ class CreapedFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         limpiarCampos()
+        establishFechaEmisionDate()
+    }
+
+    private fun establishFechaEmisionDate(){
+        val currentDate = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd") // Change the format as needed
+        val formattedDate = dateFormat.format(currentDate)
+        ptfechaemision.setText(formattedDate)
     }
 
     private fun setupViewsCliente() {
         ptrazonsocial.setOnItemClickListener { parent, view, position, id ->
             val clienteSeleccionado = parent.getItemAtPosition(position) as ListcliResponse?
             if (clienteSeleccionado != null) {
+                val clienteDocumento = clienteSeleccionado.tipoDocumento
+                val spinnerClientePosition = when(clienteDocumento){
+                    1 -> 1
+                    6 -> 0
+                    else -> 1
+                }
+                spinnerDocumentoCliente.setSelection(spinnerClientePosition)
                 ptrucdni.setText(clienteSeleccionado.numeroDocumento)
                 ptdireccion.setText(clienteSeleccionado.direccion)
             }
@@ -217,7 +235,6 @@ class CreapedFragment : Fragment() {
                     val cantidad = cantidadText.toInt()
 
                     val regisdetalleRequest = RegisdetalleRequest()
-                    regisdetalleRequest.orderId = getArguments()?.getInt("orderId") ?: 0 // Establecer idped
                     regisdetalleRequest.codigo = idproduc
                     regisdetalleRequest.cantidad = cantidad
 
@@ -253,17 +270,20 @@ class CreapedFragment : Fragment() {
         btnguardar?.setOnClickListener {
             val tipoComprobante = spinnerTipoDocumento.selectedItem.toString().trim().toUpperCase(Locale.getDefault())
             val rucdni = ptrucdni.text.toString().trim()
-            val fchareparto = ptfchareparto.text.toString().trim()
-            val serieText = ptserie.text.toString().trim()
-            val numeroText = ptnumero.text.toString().trim()
+            val fchareparto = ptfechaemision.text.toString().trim()
+            val spinner = view?.findViewById<Spinner>(R.id.spinnerDocumentoCliente)
+            val selectedItem = spinner?.selectedItem.toString()
             if (!tipoComprobante.isEmpty() && !rucdni.isEmpty() && !fchareparto.isEmpty()) {
                 try {
-                    val numeroVal = numeroText.toInt()
+                    val tipoDocumentoValue = when (selectedItem) {
+                        "RUC" -> 6
+                        "DNI" -> 1
+                        else -> -1 // Default value or handle error case
+                    }
 
                     val regispedRequest = RegispedRequest()
-                    regispedRequest.serie = serieText
-                    regispedRequest.numero = numeroVal
                     regispedRequest.tipoDeComprobante = tipoComprobante
+                    regispedRequest.tipoDocumento = tipoDocumentoValue
                     regispedRequest.numeroDocumento = rucdni
                     regispedRequest.fechaDeEmision = fchareparto
 
@@ -288,10 +308,8 @@ class CreapedFragment : Fragment() {
 
     private fun limpiarPedidosCampos() {
         ptrazonsocial.text.clear()
-        ptserie.text.clear()
         ptrucdni.text.clear()
         ptdireccion.text.clear()
-        ptfchareparto.text.clear()
         ptidped.text.clear()
     }
 
@@ -312,10 +330,8 @@ class CreapedFragment : Fragment() {
         }
 
         ptidped.setText(listpeddetailedResponse.id.toString())
-        ptserie.setText(listpeddetailedResponse.serie)
-        ptnumero.setText(listpeddetailedResponse.numero.toString())
         spinnerTipoDocumento.setSelection(spinnerPosition)
-        ptfchareparto.setText(listpeddetailedResponse.fechaDeEmision)
+        ptfechaemision.setText(listpeddetailedResponse.fechaDeEmision)
         ptrucdni.setText(listpeddetailedResponse.numeroDocumento)
         ptdireccion.setText(listpeddetailedResponse.direccion)
     }
@@ -330,8 +346,6 @@ class CreapedFragment : Fragment() {
 
     private fun limpiarCampos() {
         ptrazonsocial.text.clear()
-        ptserie.text.clear()
-        ptnumero.text.clear()
         ptrucdni.text.clear()
         ptdireccion.text.clear()
         ptdescripcionproducto.text.clear()
@@ -340,7 +354,7 @@ class CreapedFragment : Fragment() {
         ptprecioproducto.text.clear()
         ptcantidadproducto.text.clear()
         spinnerTipoDocumento.setSelection(0)
-        ptfchareparto.text.clear()
+        ptfechaemision.text.clear()
         ptidped.text.clear()
     }
 

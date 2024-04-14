@@ -9,7 +9,7 @@ interface MobileServicio {
     @GET("pedido/listarCustom")
     fun listarPedidos(): Call<List<ListpedResponse>>
 
-    @PUT("pedido/agregarParcial")
+    @PUT("pedido/agregar")
     fun registroPedido(@Body regispedRequest: RegispedRequest): Call<RegispedResponse>
 
     @DELETE("pedido/eliminar/{id}")
@@ -18,11 +18,11 @@ interface MobileServicio {
     @GET("pedido/buscarDetallado/{id}")
     fun buscarPedidoDetallado(@Path("id") id: Int): Call<ListpeddetailedResponse>
 
-    @POST("pedido/modificarParcial/{idped}")
-    fun modificarPedido(@Path("idped") idped: Int, @Body modifypedRequest: ModifypedRequest): Call<String>
+    @POST("pedido/modificar")
+    fun modificarPedido(@Body modifypedRequest: ModifypedRequest): Call<String>
 
-    @GET("cliente/buscarPorRazonSocialParcial/{partialRazonSocial}")
-    fun sugerenciasPorRazonSocial(@Path("partialRazonSocial") razonSocial: String): Call<List<ListcliResponse>>
+    @GET("cliente/buscarPorDenominacionParcial/{partialDenominacion}")
+    fun sugerenciasPorRazonSocial(@Path("partialDenominacion") razonSocial: String): Call<List<ListcliResponse>>
 
     @GET("cliente/listar")
     fun listadoClientes(): Call<List<ListcliResponse>>
@@ -45,8 +45,8 @@ interface MobileServicio {
     @GET("detalle/listarNoAsignados")
     fun listarDetallesNoAsignados(): Call<List<ListdetalleResponse>>
 
-    @GET("detalle/listarPorPedido/{idped}")
-    fun listarDetallesPorPedido(@Path("idped") idped: Int): Call<List<ListdetalleResponse>>
+    @GET("detalle/listarPorOrderId/{orderId}")
+    fun listarDetallesPorPedido(@Path("orderId") idped: Int): Call<List<ListdetalleResponse>>
 
     @PUT("detalle/registrarDetalleParcial")
     fun registroDetalleParcial(@Body regisdetalleRequest: RegisdetalleRequest): Call<String>
@@ -60,8 +60,8 @@ interface MobileServicio {
     @DELETE("detalle/eliminarNoAsignados")
     fun eliminacionDetallesNoAsignados(): Call<String>
 
-    @POST("detalle/asignarIdped/{idped}")
-    fun asignacionIdpedADetalles(@Path("idped") idped: Int): Call<String>
+    @POST("detalle/asignarOrderId/{orderId}")
+    fun asignacionIdpedADetalles(@Path("orderId") orderId: Int): Call<String>
 
     @GET("promocion/listar")
     fun listarPromociones(): Call<List<PromocionesResponse>>

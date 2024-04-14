@@ -48,34 +48,6 @@
             app:layout_constraintTop_toBottomOf="@+id/spinnerTipoDocumento" />
 
         <EditText
-            android:id="@+id/ptserie"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:editable="false"
-            android:ems="10"
-            android:hint="@string/creaped_ptserie"
-            android:inputType="none"
-            android:textSize="14dp"
-            app:layout_constraintEnd_toStartOf="@+id/ptnumero"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/ptrazonsocial" />
-
-        <EditText
-            android:id="@+id/ptnumero"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:editable="false"
-            android:ems="10"
-            android:hint="@string/creaped_ptnumero"
-            android:inputType="none"
-            android:textSize="14dp"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
-            app:layout_constraintStart_toEndOf="@+id/ptserie"
-            app:layout_constraintTop_toBottomOf="@+id/ptrazonsocial" />
-
-        <EditText
             android:id="@+id/ptidproduc"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
@@ -99,10 +71,22 @@
             android:hint="@string/ptrucdni"
             android:inputType="none"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/ptserie" />
+            app:layout_constraintEnd_toStartOf="@+id/spinnerDocumentoCliente"
+            app:layout_constraintTop_toBottomOf="@+id/ptrazonsocial" />
+
+        <Spinner
+            android:id="@+id/spinnerDocumentoCliente"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:entries="@array/tipo_documento_options_clients"
+            app:layout_constraintStart_toEndOf="@+id/ptrucdni"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/ptrazonsocial" />
 
         <EditText
             android:id="@+id/ptdireccion"

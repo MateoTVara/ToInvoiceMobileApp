@@ -85,27 +85,65 @@ class CreapedViewModel(application: Application) : AndroidViewModel(application)
                 override fun onResponse(call: Call<RegispedResponse>, response: Response<RegispedResponse>) {
                     if (response.isSuccessful) {
                         val regispedResponse: RegispedResponse? = response.body()
-                        val idped: Int = regispedResponse?.id ?: -1
+                        val orderId: Int = regispedResponse?.id ?: return
 
                         // Asignar idped a detalles no asignados
-                        asignarIdpedADetalles(idped)
+                        asignarIdpedADetalles(orderId)
 
                         regispedResponseMutableLiveData.value = regispedResponse
                         mensajeRegistroLiveData.value = "Registro de pedido exitoso"
+                    } else {
+                        // Manejar errores en la respuesta
+                        handleErrorResponse(response)
                     }
                 }
 
                 override fun onFailure(call: Call<RegispedResponse>, t: Throwable) {
+                    // Manejar fallos en la conexión
                     handleFailure(t)
                 }
             })
     }
 
-    // Método privado para manejar errores en respuestas de tipo String
-    private fun handleErrorResponseString(response: Response<String>) {
-        Log.e("CreapedViewModel", "Error en la respuesta: ${response.code()}")
-        // Puedes manejar el error de otra manera si es necesario
+    fun asignarIdpedADetalles(orderId: Int) {
+        MobileCliente.getInstance().asignacionIdpedADetalles(orderId)
+            .enqueue(object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    if (response.isSuccessful) {
+                        // Puedes hacer algo con la respuesta si es necesario
+                        mensajeRegistroLiveData.value = "Asignación de orderId a detalles exitosa"
+                    } else {
+                        // Manejar errores en la respuesta
+                        handleErrorResponseString(response)
+                    }
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    // Manejar fallos en la conexión
+                    handleFailure(t)
+                }
+            })
     }
+
+    fun handleErrorResponse(response: Response<*>?) {
+        if (response?.errorBody() != null) {
+            val errorMessage = response.errorBody()?.string() ?: "Error desconocido"
+            Log.e("MobileCliente", "Error en la respuesta del servidor: $errorMessage")
+            // Aquí puedes mostrar un mensaje de error en la interfaz de usuario, si es necesario
+        } else {
+            Log.e("MobileCliente", "La respuesta del servidor está vacía")
+            // Aquí puedes mostrar un mensaje de error en la interfaz de usuario, si es necesario
+        }
+    }
+
+
+    private fun handleErrorResponseString(response: Response<String>?) {
+        val errorMessage = response?.errorBody()?.string() ?: "Error desconocido"
+        Log.e("MobileCliente", "Error en la respuesta del servidor: $errorMessage")
+        // Aquí puedes mostrar un mensaje de error en la interfaz de usuario, si es necesario
+    }
+
+
 
     fun registrarDetalleParcial(regisdetalleRequest: RegisdetalleRequest) {
         Log.d("MobileCliente", "Enviando solicitud de registro de detalle parcial...")
@@ -130,6 +168,7 @@ class CreapedViewModel(application: Application) : AndroidViewModel(application)
                 }
             })
     }
+
     fun eliminarDetalle(idDetalle: Int) {
         MobileCliente.getInstance().eliminacionDetalle(idDetalle)
             .enqueue(object : Callback<String> {
@@ -161,27 +200,8 @@ class CreapedViewModel(application: Application) : AndroidViewModel(application)
             })
     }
 
-    fun asignarIdpedADetalles(idped: Int) {
-        MobileCliente.getInstance().asignacionIdpedADetalles(idped)
-            .enqueue(object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    if (response.isSuccessful) {
-                        // Puedes hacer algo con la respuesta si es necesario
-                        mensajeRegistroLiveData.value = "Asignación de Idped a detalles exitosa"
-                    } else {
-                        // Manejar errores en la respuesta
-                        handleErrorResponseString(response)
-                    }
-                }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    Log.e("MobileCliente", "Error en la conexión", t)
-                    handleFailure(t)
-                }
-            })
-    }
-    fun modificarPedido(idPedido: Int, modifypedRequest: ModifypedRequest) {
-        MobileCliente.getInstance().modificarPedido(idPedido, modifypedRequest)
+    fun modificarPedido(modifypedRequest: ModifypedRequest) {
+        MobileCliente.getInstance().modificarPedido(modifypedRequest)
             .enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if (response.isSuccessful) {
