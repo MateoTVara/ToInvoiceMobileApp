@@ -12,6 +12,8 @@ class ListpedAdapter : RecyclerView.Adapter<ListpedAdapter.ViewHolder>() {
     private var listpedResponseListOriginal = mutableListOf<ListpedResponse>()
     private var onDeleteButtonClickListener: OnDeleteButtonClickListener? = null
     private var onEditButtonClickListener: OnEditButtonClickListener? = null
+    private var onEnviarButtonClickListener: OnEnviarButtonClickListener? = null
+
 
     interface OnDeleteButtonClickListener {
         fun onDeleteButtonClick(idPed: Int)
@@ -27,6 +29,14 @@ class ListpedAdapter : RecyclerView.Adapter<ListpedAdapter.ViewHolder>() {
 
     fun setOnEditButtonClickListener(listener: OnEditButtonClickListener) {
         onEditButtonClickListener = listener
+    }
+
+    interface OnEnviarButtonClickListener {
+        fun onEnviarButtonClick(idPed: Int)
+    }
+
+    fun setOnEnviarButtonClickListener(listener: OnEnviarButtonClickListener) {
+        onEnviarButtonClickListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -49,6 +59,10 @@ class ListpedAdapter : RecyclerView.Adapter<ListpedAdapter.ViewHolder>() {
 
             btnedit.setOnClickListener {
                 onEditButtonClickListener?.onEditButtonClick(listpedResponse.id)
+            }
+
+            btnenviar.setOnClickListener{
+                onEnviarButtonClickListener?.onEnviarButtonClick(listpedResponse.id)
             }
         }
     }

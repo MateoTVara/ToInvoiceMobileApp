@@ -46,6 +46,8 @@ class CreacliFragment : Fragment() {
         btncreacliguardar=binding.btncreacliguardar
         btncreaclicancelar=binding.btncreaclicancelar
 
+        spinnerTipoDocumento = binding.spinnerTipoDocumento
+
         setupGuardarButton()
         setupCancelarButton()
 

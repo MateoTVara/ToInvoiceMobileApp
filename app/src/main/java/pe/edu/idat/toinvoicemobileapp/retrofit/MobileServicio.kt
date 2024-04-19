@@ -1,5 +1,6 @@
 package pe.edu.idat.toinvoicemobileapp.retrofit
 
+import pe.edu.idat.toinvoicemobileapp.retrofit.api.GET.CabeceraGET
 import pe.edu.idat.toinvoicemobileapp.retrofit.request.*
 import pe.edu.idat.toinvoicemobileapp.retrofit.response.*
 import retrofit2.Call
@@ -17,9 +18,17 @@ interface MobileServicio {
 
     @GET("pedido/buscarDetallado/{id}")
     fun buscarPedidoDetallado(@Path("id") id: Int): Call<ListpeddetailedResponse>
+    @GET("pedido/buscarDetallado/{id}")
+    fun buscarPedidoDetalladoConDetalles(@Path("id") id: Int): Call<CabeceraGET>
 
     @POST("pedido/modificar")
     fun modificarPedido(@Body modifypedRequest: ModifypedRequest): Call<String>
+
+    @GET("pedido/verificarEnvioSunat/{id}")
+    fun verificarEnvioSunat(@Path("id") id: Int): Call<SendStateResponse>
+
+    @POST("pedido/marcarComoEnviadoSunat/{id}")
+    fun marcarComoEnviadoSunat(@Path("id") id:Int): Call<SendStateResponse>
 
     @GET("cliente/buscarPorDenominacionParcial/{partialDenominacion}")
     fun sugerenciasPorRazonSocial(@Path("partialDenominacion") razonSocial: String): Call<List<ListcliResponse>>
