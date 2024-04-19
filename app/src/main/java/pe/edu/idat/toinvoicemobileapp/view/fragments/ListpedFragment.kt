@@ -35,7 +35,7 @@ class ListpedFragment : Fragment(), SearchView.OnQueryTextListener,
     private lateinit var binding: FragmentListpedBinding
     private lateinit var listpedViewModel: ListpedViewModel
     private val listpedAdapter = ListpedAdapter()
-
+    private var isObservingLiveData = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,7 +78,6 @@ class ListpedFragment : Fragment(), SearchView.OnQueryTextListener,
     override fun onEnviarButtonClick(idPed: Int) {
 
         // Antes de mostrar el cuadro de diálogo de confirmación, verificamos el estado enviado_a_sunat
-
         listpedViewModel.verificarEnvioSunat(idPed) { enviadoASunat ->
 
             if (enviadoASunat) {
@@ -89,6 +88,7 @@ class ListpedFragment : Fragment(), SearchView.OnQueryTextListener,
                 // El pedido no ha sido enviado a SUNAT, proceder con el cuadro de diálogo de confirmación
                 val confirmationDialog = ConfirmationDialog(requireContext(), object : ConfirmationDialog.ConfirmationListener {
                     override fun onConfirmed() {
+                        listpedViewModel.cabeceraENTMutableLiveData.removeObservers(viewLifecycleOwner)
                         // Aquí iría el código para enviar los datos a través de DBApi
                         listpedViewModel.buscarPedidoDetalladoConDetalles(idPed)
                         listpedViewModel.cabeceraENTMutableLiveData.observe(viewLifecycleOwner, Observer { cabeceraGET ->
@@ -101,22 +101,23 @@ class ListpedFragment : Fragment(), SearchView.OnQueryTextListener,
 
                             val token = "eyJhbGciOiJIUzI1NiJ9.IjIwYmUyMjIyYzAwMTQyMTc5MDQxZDA2OTNiMDU2NmUyMTI1M2ZjNzFjNGE4NDBkMGE3MjNlOTRjZjE1MmEzM2Mi.mXBrOrQ8bykTFePv8Kx6RQdmjsHl4X6fKm0EhzOSZjU" // Asegúrate de tener un token válido aquí
                             val dbApi = DBApi()
-                            try {
-                                lifecycleScope.launch {
+                            lifecycleScope.launch {
+                                try {
                                     val response = dbApi.postafirmativo(documentoJson, token)
 
                                     if (response != null) {
                                         println("La solicitud fue exitosa: $response")
+                                        // Solo marcamos como enviado a Sunat si la solicitud fue exitosa
+                                        listpedViewModel.marcarComoEnviadoSunat(idPed)
                                     } else {
                                         println("Hubo un error al enviar la solicitud")
+                                        Toast.makeText(requireContext(), "Hubo un error al enviar la solicitud", Toast.LENGTH_SHORT).show()
                                     }
+                                } catch (e: Exception) {
+                                    println("Error al enviar la solicitud: ${e.message}")
+                                    Toast.makeText(requireContext(), "Error al enviar la solicitud: ${e.message}", Toast.LENGTH_SHORT).show()
                                 }
-                                listpedViewModel.marcarComoEnviadoSunat(idPed)
-                            } catch (e: Exception) {
-                                println("Error al enviar la solicitud: ${e.message}")
-                                Toast.makeText(requireContext(), "Error al enviar la solicitud: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
-
                         })
                     }
 
@@ -235,6 +236,26 @@ class ListpedFragment : Fragment(), SearchView.OnQueryTextListener,
         )
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        observeLiveData()
+    }
+
+    private fun observeLiveData() {
+        if (!isObservingLiveData) {
+            listpedViewModel.listMutableLiveData.observe(viewLifecycleOwner) { listpedResponses ->
+                listpedAdapter.setPedidos(listpedResponses)
+            }
+            isObservingLiveData = true
+        }
+    }
+
+    override fun onDestroyView() {
+        listpedViewModel.listMutableLiveData.removeObservers(viewLifecycleOwner)
+        isObservingLiveData = false
+
+        super.onDestroyView()
+    }
 
 }
